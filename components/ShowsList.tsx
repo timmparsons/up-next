@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import React from 'react';
-import { FlatList } from 'react-native-gesture-handler';
 
 type Props = {
   title: string;
@@ -11,32 +10,27 @@ type ItemProps = { id?: number; title: string };
 const data = [
   {
     id: 1,
-    name: 'Godfather',
+    title: 'Godfather',
   },
   {
     id: 2,
-    name: 'Usual Suspects',
+    title: 'Usual Suspects',
   },
 ];
 
-const Item = ({ title }) => (
+type ShowProps = { title: string };
+
+const Shows = ({ title }: ShowProps) => (
   <View>
     <Text>{title}</Text>
   </View>
 );
 
-const ShowsList = ({ title }: Props) => {
+const ShowsList = ({ title }: ItemProps) => {
   return (
     <View className="p-8">
       <Text className="text-2xl font-extrabold">{title}</Text>
-      <FlatList
-        data={data}
-        renderItem={
-          <View>
-            <Text>{title}</Text>
-          </View>
-        }
-      />
+      <FlatList data={data} renderItem={({ item }) => <Shows title={item.title} />} />
     </View>
   );
 };
