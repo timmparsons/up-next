@@ -2,8 +2,6 @@ import { Tabs } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import { TabBarIcon } from '../../components/TabBarIcon';
-
 export default function TabLayout() {
   return (
     <Tabs
