@@ -1,5 +1,6 @@
+import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, Pressable } from 'react-native';
 
 import { ShowsListProps } from '~/types/movies';
 
@@ -16,16 +17,20 @@ const ShowsList = ({ title, data }: ShowsListProps) => {
         renderItem={({ item }) => (
           <View className="mb-4 mr-2">
             <Text className="text-lg">{item.title}</Text>
-            <Image
-              className="h-40 w-full rounded-lg"
-              source={{
-                uri: item.backdrop_path
-                  ? `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
-                  : 'https://via.placeholder.com/500x300',
-              }}
-              resizeMode="cover"
-              style={{ aspectRatio: 16 / 9, height: 240 }} // Adjust height here
-            />
+            <Link href={`/${item.id}`} asChild>
+              <Pressable>
+                <Image
+                  className="h-40 w-full rounded-lg"
+                  source={{
+                    uri: item.backdrop_path
+                      ? `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
+                      : 'https://via.placeholder.com/500x300',
+                  }}
+                  resizeMode="cover"
+                  style={{ aspectRatio: 16 / 9, height: 120 }}
+                />
+              </Pressable>
+            </Link>
           </View>
         )}
       />
