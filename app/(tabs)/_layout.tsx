@@ -1,6 +1,6 @@
-import { Tabs } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
   return (
@@ -22,7 +22,8 @@ export default function TabLayout() {
           elevation: 5,
           paddingBottom: 0,
         },
-        tabBarActiveTintColor: '#007aff',
+        tabBarActiveTintColor: 'black',
+
         tabBarInactiveTintColor: 'gray',
         tabBarIconStyle: {
           justifyContent: 'center',
@@ -31,10 +32,10 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 9,
-          fontWeight: 'bold',
+          fontWeight: 'semibold',
           paddingTop: 0,
-          marginTop: -7,
-          marginBottom: 5,
+          marginTop: -5,
+          marginBottom: 7,
         },
       }}>
       <Tabs.Screen
