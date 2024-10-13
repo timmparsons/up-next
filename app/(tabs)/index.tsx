@@ -1,19 +1,29 @@
 import { Stack } from 'expo-router';
 import { SafeAreaView } from 'react-native';
 
+import FontsLoader from '~/components/FontsLoader';
 import Header from '~/components/Header';
+import PendingWatches from '~/components/PendingWatches';
 import PillList from '~/components/PillList';
 import SearchBar from '~/components/SearchBar';
 import ShowsList from '~/components/ShowsList';
 
 export default function Home() {
   return (
-    <SafeAreaView className="flex-1">
-      <Stack.Screen options={{ title: 'Home', headerShown: false }} />
-      <Header />
-      <SearchBar />
-      <PillList />
-      <ShowsList title="Still need to watch" />
-    </SafeAreaView>
+    <FontsLoader>
+      <SafeAreaView className="flex-1">
+        <Stack.Screen options={{ title: 'Home', headerShown: false }} />
+        <Header />
+
+        <SearchBar />
+
+        <PillList />
+
+        {/* If no genre selected, show ShowsList */}
+        <PendingWatches />
+        {/* <ShowsList title="Popular" />
+        <ShowsList title="Your Friends' Favorites" /> */}
+      </SafeAreaView>
+    </FontsLoader>
   );
 }

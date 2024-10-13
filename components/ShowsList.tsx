@@ -1,38 +1,35 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import React from 'react';
+import Shows from './Shows';
 
-type Props = {
+import { MOVIE_DATA } from '~/helpers/data';
+
+type ShowItem = {
+  id: number;
   title: string;
 };
 
-type ItemProps = { id?: number; title: string };
+type ShowsListProps = {
+  id?: number;
+  title: string;
+  data: ShowItem[];
+};
 
-const data = [
-  {
-    id: 1,
-    title: 'Godfather',
-  },
-  {
-    id: 2,
-    title: 'Usual Suspects',
-  },
-];
-
-type ShowProps = { title: string };
-
-const Shows = ({ title }: ShowProps) => (
-  <View>
-    <Text>{title}</Text>
-  </View>
-);
-
-const ShowsList = ({ title }: ItemProps) => {
+const ShowsList = ({ title, data }: ShowsListProps) => {
   return (
-    <View className="p-8">
-      <Text className="text-2xl font-extrabold">{title}</Text>
+    <View className="mt-2 px-8">
+      <Text style={styles.headingText} className="text-2xl font-extrabold">
+        {title}
+      </Text>
       <FlatList data={data} renderItem={({ item }) => <Shows title={item.title} />} />
     </View>
   );
 };
 
 export default ShowsList;
+
+const styles = StyleSheet.create({
+  headingText: {
+    fontFamily: 'ZillaSlab_600SemiBold',
+  },
+});
