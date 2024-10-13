@@ -1,19 +1,29 @@
+import { TMDB_PASSKEY } from '@env';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+
 import ShowsList from './ShowsList';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+
+import { MovieResponse } from '~/types/movies';
 
 const PendingWatches = () => {
-  const [getPendingMovies, setPendingMovies] = useState([]);
+  const [getPopularMovies, setPopularMovies] = useState<MovieResponse>({
+    page: 1,
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+  });
 
-  // Get movie data and pass into ShowsList
   useEffect(() => {
     const getMovies = async () => {
       try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-        const data = await res.json();
-        console.log(data);
-        setPendingMovies(data);
+        const res = await fetch('https://api.themoviedb.org/3/movie/popular', {
+          headers: {
+            Authorization: `Bearer ${TMDB_PASSKEY}`,
+          },
+        });
+        const data: MovieResponse = await res.json();
+        setPopularMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
       }
@@ -24,7 +34,7 @@ const PendingWatches = () => {
 
   return (
     <View>
-      <ShowsList title="Pending Watches" data={[]} />
+      <ShowsList title="Pending Watches" data={getPopularMovies.results} />
     </View>
   );
 };

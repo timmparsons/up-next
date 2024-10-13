@@ -1,19 +1,7 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
 import React from 'react';
-import Shows from './Shows';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
 
-import { MOVIE_DATA } from '~/helpers/data';
-
-type ShowItem = {
-  id: number;
-  title: string;
-};
-
-type ShowsListProps = {
-  id?: number;
-  title: string;
-  data: ShowItem[];
-};
+import { ShowsListProps } from '~/types/movies';
 
 const ShowsList = ({ title, data }: ShowsListProps) => {
   return (
@@ -21,7 +9,26 @@ const ShowsList = ({ title, data }: ShowsListProps) => {
       <Text style={styles.headingText} className="text-2xl font-extrabold">
         {title}
       </Text>
-      <FlatList data={data} renderItem={({ item }) => <Shows title={item.title} />} />
+      <FlatList
+        horizontal
+        data={data.slice(0, 5)}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View className="mb-4 mr-2">
+            <Text className="text-lg">{item.title}</Text>
+            <Image
+              className="h-40 w-full rounded-lg"
+              source={{
+                uri: item.backdrop_path
+                  ? `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
+                  : 'https://via.placeholder.com/500x300',
+              }}
+              resizeMode="cover"
+              style={{ aspectRatio: 16 / 9, height: 240 }} // Adjust height here
+            />
+          </View>
+        )}
+      />
     </View>
   );
 };
