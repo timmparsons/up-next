@@ -1,4 +1,3 @@
-import { TMDB_PASSKEY } from '@env';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
@@ -7,13 +6,14 @@ const MovieDetails = () => {
   const { id } = useLocalSearchParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  console.log('XXX-Details');
 
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, {
           headers: {
-            Authorization: `Bearer ${TMDB_PASSKEY}`,
+            Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
           },
         });
         const data = await response.json();
@@ -26,7 +26,7 @@ const MovieDetails = () => {
     };
 
     fetchMovieData();
-  }, [id]);
+  }, []);
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -35,7 +35,7 @@ const MovieDetails = () => {
   if (!movie) {
     return <Text>No movie found.</Text>;
   }
-
+  console.log('VVV-MoveDe', movie);
   return (
     <View>
       <Stack.Screen options={{ title: 'movie', headerBackTitleVisible: false }} />

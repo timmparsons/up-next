@@ -1,4 +1,3 @@
-import { TMDB_PASSKEY } from '@env';
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
@@ -15,21 +14,21 @@ const PendingWatches = () => {
   });
 
   useEffect(() => {
-    const getMovies = async () => {
+    const getPopularMoviesFromApi = async () => {
       try {
-        const res = await fetch('https://api.themoviedb.org/3/movie/popular', {
+        const response = await fetch('https://api.themoviedb.org/3/movie/popular', {
           headers: {
-            Authorization: `Bearer ${TMDB_PASSKEY}`,
+            Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
           },
         });
-        const data: MovieResponse = await res.json();
+        const data: MovieResponse = await response.json();
         setPopularMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
       }
     };
 
-    getMovies();
+    getPopularMoviesFromApi();
   }, []);
 
   return (
