@@ -1,7 +1,19 @@
 import { View, Text } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+interface MovieItem {
+  id: number;
+  title: string;
+}
+
+interface MovieResponse {
+  results: MovieItem[];
+}
 
 const MovieGenre = ({ id }) => {
+  const [topTenGenre, setTopTenGenre] = useState<MovieResponse>({
+    results: [],
+  });
   useEffect(() => {
     const fetchGenreData = async () => {
       try {
@@ -14,7 +26,7 @@ const MovieGenre = ({ id }) => {
           }
         );
         const data = await response.json();
-        console.log('GENRE-DATA ', data);
+        setTopTenGenre(data);
       } catch (error) {
         console.error('Error fetching movie data:', error);
       } finally {
@@ -27,6 +39,7 @@ const MovieGenre = ({ id }) => {
 
   return (
     <View>
+      {topTenGenre?.results?.map((movie) => <Text>{movie.title}</Text>)}
       <Text>Genre: {id}</Text>
     </View>
   );
