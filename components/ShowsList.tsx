@@ -5,7 +5,6 @@ import { View, Text, FlatList, StyleSheet, Image, Pressable } from 'react-native
 import { ShowsListProps } from '~/types/movies';
 
 const ShowsList = ({ title, data }: ShowsListProps) => {
-  console.log('QQQ-ShowsList ', data);
   return (
     <View className="mt-2 px-8">
       <Text style={styles.headingText} className="text-2xl font-extrabold">
