@@ -2,6 +2,7 @@ import { View, Text, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ShowsList from './ShowsList';
 import { GENRE_DATA } from '~/helpers/data';
+import { fetchMovies, TMDB_MOVIE_URL } from '~/app/api';
 
 interface MovieItem {
   id: number;
@@ -22,15 +23,10 @@ const MovieGenre = ({ id }) => {
   useEffect(() => {
     const fetchGenreData = async () => {
       try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
-            },
-          }
+        const data = await fetchMovies(
+          'movie',
+          `include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${id}`
         );
-        const data = await response.json();
         setTopTenGenre(data);
       } catch (error) {
         console.error('Error fetching movie data:', error);
