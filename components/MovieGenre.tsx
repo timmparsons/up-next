@@ -1,5 +1,7 @@
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import ShowsList from './ShowsList';
+import { GENRE_DATA } from '~/helpers/data';
 
 interface MovieItem {
   id: number;
@@ -14,6 +16,9 @@ const MovieGenre = ({ id }) => {
   const [topTenGenre, setTopTenGenre] = useState<MovieResponse>({
     results: [],
   });
+
+  const genre = GENRE_DATA.find((item) => item.id === id);
+
   useEffect(() => {
     const fetchGenreData = async () => {
       try {
@@ -29,8 +34,6 @@ const MovieGenre = ({ id }) => {
         setTopTenGenre(data);
       } catch (error) {
         console.error('Error fetching movie data:', error);
-      } finally {
-        console.log('noooo');
       }
     };
 
@@ -39,8 +42,12 @@ const MovieGenre = ({ id }) => {
 
   return (
     <View>
-      {topTenGenre?.results?.map((movie) => <Text>{movie.title}</Text>)}
-      <Text>Genre: {id}</Text>
+      <ShowsList
+        title={`Popular ${genre?.title || 'Movies'} Movies`}
+        data={topTenGenre.results}
+        horizontal={false}
+        numColumns={2}
+      />
     </View>
   );
 };

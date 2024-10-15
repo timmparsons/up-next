@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text } from 'react-native';
 
+import MovieGenre from './MovieGenre';
+import PendingWatches from './PendingWatches';
 import Pill from './Pill';
 
 import { GENRE_DATA } from '~/helpers/data';
-import PendingWatches from './PendingWatches';
-import MovieGenre from './MovieGenre';
 
 const PillList = () => {
   const [genreSelected, setGenreSelected] = useState<number | null>(null);
@@ -16,7 +16,9 @@ const PillList = () => {
         <FlatList
           horizontal
           data={GENRE_DATA}
-          renderItem={({ item }) => <Pill data={item} setGenreSelected={setGenreSelected} />}
+          renderItem={({ item }) => (
+            <Pill data={item} genreSelected={genreSelected} setGenreSelected={setGenreSelected} />
+          )}
         />
       </View>
       <View>{genreSelected ? <MovieGenre id={genreSelected} /> : <PendingWatches />}</View>
