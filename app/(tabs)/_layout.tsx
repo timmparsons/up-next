@@ -1,43 +1,45 @@
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Fontisto from '@expo/vector-icons/Fontisto';
 import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={{
-        tabBarStyle: {
-          position: 'absolute',
-          bottom: 30,
-          height: 60,
-          width: '80%',
-          left: '10%',
-          alignSelf: 'center',
-          borderRadius: 30,
-          backgroundColor: '#ffffff',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.3,
-          shadowRadius: 4,
-          elevation: 5,
-          paddingBottom: 0,
-        },
-        tabBarActiveTintColor: 'black',
+    // screenOptions={{
+    //   tabBarStyle: {
+    //     position: 'absolute',
+    //     bottom: 30,
+    //     height: 60,
+    //     width: '80%',
+    //     left: '10%',
+    //     alignSelf: 'center',
+    //     borderRadius: 30,
+    //     backgroundColor: '#ffffff',
+    //     shadowColor: '#000',
+    //     shadowOffset: { width: 0, height: 4 },
+    //     shadowOpacity: 0.3,
+    //     shadowRadius: 4,
+    //     elevation: 5,
+    //     paddingBottom: 0,
+    //   },
+    //   tabBarActiveTintColor: 'black',
 
-        tabBarInactiveTintColor: 'gray',
-        tabBarIconStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 0,
-        },
-        tabBarLabelStyle: {
-          fontSize: 9,
-          fontWeight: 'semibold',
-          paddingTop: 0,
-          marginTop: -5,
-          marginBottom: 7,
-        },
-      }}>
+    //   tabBarInactiveTintColor: 'gray',
+    //   tabBarIconStyle: {
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     marginBottom: 0,
+    //   },
+    //   tabBarLabelStyle: {
+    //     fontSize: 9,
+    //     fontWeight: 'semibold',
+    //     paddingTop: 0,
+    //     marginTop: -5,
+    //     marginBottom: 7,
+    //   },
+    // }}>
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -54,16 +56,23 @@ export default function TabLayout() {
         name="list"
         options={{
           title: 'List',
-          tabBarIcon: ({ color }) => <Feather name="list" size={20} color="lightgray" />,
+          tabBarIcon: ({ color }) => <Fontisto name="favorite" size={24} color="lightgray" />,
         }}
       />
       <Tabs.Screen
         name="myMovies"
         options={{
-          title: 'My Movies',
+          title: 'Movies',
           tabBarIcon: ({ color }) => (
             <FontAwesome name="file-movie-o" size={20} color="lightgray" />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="myTV"
+        options={{
+          title: 'TV',
+          tabBarIcon: ({ color }) => <Feather name="tv" size={24} color="lightgray" />,
         }}
       />
       <Tabs.Screen

@@ -7,7 +7,7 @@ import { ShowsListProps } from '~/types/movies';
 const ShowsList = ({ title, data }: ShowsListProps) => {
   return (
     <View className="mt-2 px-8">
-      <Text style={styles.headingText} className="text-2xl font-extrabold">
+      <Text style={styles.headingText} className="pb-3 text-2xl font-extrabold">
         {title}
       </Text>
       <FlatList
@@ -16,7 +16,6 @@ const ShowsList = ({ title, data }: ShowsListProps) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View className="mb-4 mr-2">
-            <Text className="text-lg">{item.title}</Text>
             <Link href={`/${item.id}`} asChild>
               <Pressable>
                 <Image
@@ -29,6 +28,7 @@ const ShowsList = ({ title, data }: ShowsListProps) => {
                   resizeMode="cover"
                   style={{ aspectRatio: 16 / 9, height: 120 }}
                 />
+                <Text className="text-lg">{item.title}</Text>
               </Pressable>
             </Link>
           </View>
