@@ -6,7 +6,6 @@ const MovieDetails = () => {
   const { id } = useLocalSearchParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log('XXX-Details');
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -35,7 +34,6 @@ const MovieDetails = () => {
   if (!movie) {
     return <Text>No movie found.</Text>;
   }
-  console.log('VVV-MoveDe', movie);
   return (
     <View>
       <Stack.Screen options={{ title: 'movie', headerBackTitleVisible: false }} />

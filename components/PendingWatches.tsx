@@ -33,7 +33,7 @@ const PendingWatches = () => {
 
   return (
     <View>
-      <ShowsList title="Pending Watches" data={getPopularMovies.results} />
+      <ShowsList title="Pending Watches" results={getPopularMovies.results} />
     </View>
   );
 };
