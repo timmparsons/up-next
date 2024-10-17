@@ -1,20 +1,13 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Pressable, Image, SafeAreaView } from 'react-native';
+import { Link } from 'expo-router';
+
 import React, { useEffect, useState } from 'react';
-import ShowsList from './ShowsList';
 import { GENRE_DATA } from '~/helpers/data';
-import { fetchMovies, TMDB_MOVIE_URL } from '~/app/api';
-
-interface MovieItem {
-  id: number;
-  title: string;
-}
-
-interface MovieResponse {
-  results: MovieItem[];
-}
+import { fetchMovies } from '~/app/api';
+import { ShowsListProps } from '~/types/movies';
 
 const MovieGenre = ({ id }) => {
-  const [topTenGenre, setTopTenGenre] = useState<MovieResponse>({
+  const [topTenGenre, setTopTenGenre] = useState<ShowsListProps>({
     results: [],
   });
 
@@ -37,14 +30,33 @@ const MovieGenre = ({ id }) => {
   }, [id]);
 
   return (
-    <View>
-      <ShowsList
-        title={`Popular ${genre?.title || 'Movies'} Movies`}
+    <SafeAreaView>
+      <FlatList
         data={topTenGenre.results}
-        horizontal={false}
         numColumns={2}
+        keyExtractor={(item) => item.id.toString()}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        contentInset={{ bottom: 50 }}
+        renderItem={({ item }) => (
+          <View style={{ marginBottom: 10, width: '48%' }}>
+            <Link href={`/${item?.id}`} asChild>
+              <Pressable>
+                <Image
+                  source={{
+                    uri: item.backdrop_path
+                      ? `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
+                      : 'https://via.placeholder.com/500x300',
+                  }}
+                  resizeMode="cover"
+                  style={{ aspectRatio: 16 / 9, height: 120, borderRadius: 8 }}
+                />
+                <Text style={{ textAlign: 'center', marginTop: 5 }}>{item.title}</Text>
+              </Pressable>
+            </Link>
+          </View>
+        )}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

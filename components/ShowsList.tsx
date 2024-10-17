@@ -4,7 +4,7 @@ import { View, Text, FlatList, StyleSheet, Image, Pressable } from 'react-native
 
 import { ShowsListProps } from '~/types/movies';
 
-const ShowsList = ({ title, data }: ShowsListProps) => {
+const ShowsList = ({ title, results }: ShowsListProps) => {
   return (
     <View className="mt-2 px-8">
       <Text style={styles.headingText} className="pb-3 text-2xl font-extrabold">
@@ -12,7 +12,7 @@ const ShowsList = ({ title, data }: ShowsListProps) => {
       </Text>
       <FlatList
         horizontal
-        data={data.slice(0, 5)}
+        data={results.slice(0, 5)}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View className="mb-4 mr-2">
