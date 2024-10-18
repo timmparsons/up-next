@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, Image, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, Pressable, Image, SafeAreaView, Alert } from 'react-native';
 import { Link } from 'expo-router';
 
 import React, { useEffect, useState } from 'react';
@@ -10,8 +10,7 @@ const MovieGenre = ({ id }) => {
   const [topTenGenre, setTopTenGenre] = useState<ShowsListProps>({
     results: [],
   });
-
-  const genre = GENRE_DATA.find((item) => item.id === id);
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
     const fetchGenreData = async () => {
@@ -29,26 +28,32 @@ const MovieGenre = ({ id }) => {
     fetchGenreData();
   }, [id]);
 
+  const buttonClicked = () => {
+    Alert.alert('Alert Title', 'My Alert Msg');
+  };
+
   return (
     <SafeAreaView>
       <FlatList
         data={topTenGenre.results}
         numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 225 }}
         keyExtractor={(item) => item.id.toString()}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentInset={{ bottom: 50 }}
         renderItem={({ item }) => (
-          <View style={{ marginBottom: 10, width: '48%' }}>
+          <View style={{ width: '50%', height: '100%' }}>
             <Link href={`/${item?.id}`} asChild>
-              <Pressable>
+              <Pressable onLongPress={buttonClicked}>
                 <Image
                   source={{
                     uri: item.backdrop_path
-                      ? `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
+                      ? `https://image.tmdb.org/t/p/w500/${item.poster_path}`
                       : 'https://via.placeholder.com/500x300',
                   }}
                   resizeMode="cover"
-                  style={{ aspectRatio: 16 / 9, height: 120, borderRadius: 8 }}
+                  style={{ aspectRatio: 16 / 9, borderRadius: 8 }}
                 />
                 <Text style={{ textAlign: 'center', marginTop: 5 }}>{item.title}</Text>
               </Pressable>
