@@ -2,13 +2,6 @@ const ICON_SIZE = 18;
 
 export const GENRE_DATA = [
   {
-    id: 99,
-    title: 'Documentaries',
-    icon: 'video-vintage',
-    iconType: 'MaterialCommunityIcons',
-    size: ICON_SIZE,
-  },
-  {
     id: 878,
     title: 'Sci-Fi',
     icon: 'robot-outline',
@@ -75,6 +68,13 @@ export const GENRE_DATA = [
     id: 9648,
     title: 'Mystery',
     icon: 'magnify',
+    iconType: 'MaterialCommunityIcons',
+    size: ICON_SIZE,
+  },
+  {
+    id: 99,
+    title: 'Documentaries',
+    icon: 'video-vintage',
     iconType: 'MaterialCommunityIcons',
     size: ICON_SIZE,
   },

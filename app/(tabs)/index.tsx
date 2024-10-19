@@ -3,8 +3,9 @@ import { SafeAreaView } from 'react-native';
 
 import FontsLoader from '~/components/FontsLoader';
 import Header from '~/components/Header';
-import PillList from '~/components/PillList';
 import SearchBar from '~/components/SearchBar';
+import TrendingMovies from '~/components/TrendingMovies';
+import TrendingTvShows from '~/components/TrendingTvShows';
 
 export default function Home() {
   return (
@@ -15,9 +16,11 @@ export default function Home() {
 
         <SearchBar />
 
-        <PillList />
+        {/* <PillList /> */}
         {/* <ShowsList title="Popular" />
         <ShowsList title="Your Friends' Favorites" /> */}
+        <TrendingMovies />
+        <TrendingTvShows />
       </SafeAreaView>
     </FontsLoader>
   );

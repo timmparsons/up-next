@@ -1,8 +1,7 @@
-import { View, Text, FlatList, Pressable, Image, SafeAreaView, Alert } from 'react-native';
 import { Link } from 'expo-router';
-
 import React, { useEffect, useState } from 'react';
-import { GENRE_DATA } from '~/helpers/data';
+import { View, Text, FlatList, Pressable, Image, SafeAreaView, Alert } from 'react-native';
+
 import { fetchMovies } from '~/app/api';
 import { ShowsListProps } from '~/types/movies';
 
@@ -35,15 +34,15 @@ const MovieGenre = ({ id }) => {
   return (
     <SafeAreaView>
       <FlatList
-        data={topTenGenre.results}
+        data={topTenGenre.results.slice(0, 8)}
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 225 }}
+        contentContainerStyle={{ paddingBottom: 250 }}
         keyExtractor={(item) => item.id.toString()}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentInset={{ bottom: 50 }}
         renderItem={({ item }) => (
-          <View style={{ width: '50%', height: '100%' }}>
+          <View style={{ width: '50%' }}>
             <Link href={`/${item?.id}`} asChild>
               <Pressable onLongPress={buttonClicked}>
                 <Image

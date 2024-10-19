@@ -60,19 +60,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="myMovies"
+        name="myShows"
         options={{
-          title: 'Movies',
+          title: 'Shows',
           tabBarIcon: ({ color }) => (
             <FontAwesome name="file-movie-o" size={20} color="lightgray" />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="myTV"
-        options={{
-          title: 'TV',
-          tabBarIcon: ({ color }) => <Feather name="tv" size={24} color="lightgray" />,
         }}
       />
       <Tabs.Screen

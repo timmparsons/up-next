@@ -21,7 +21,8 @@ const PillList = () => {
           )}
         />
       </View>
-      <View>{genreSelected ? <MovieGenre id={genreSelected} /> : <PendingWatches />}</View>
+      {/* <View>{genreSelected ? <MovieGenre id={genreSelected} /> : <PendingWatches />}</View> */}
+      <View>{/* <MovieGenre id={genreSelected} /> */}</View>
     </View>
   );
 };
