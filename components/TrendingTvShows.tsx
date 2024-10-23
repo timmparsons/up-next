@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 import ShowList from './ShowList';
 
-import { fetchMovies } from '~/app/api';
+import { fetchMovies } from '~/api';
 import { ShowsListProps } from '~/types/movies';
 
 const TrendingTvShows = () => {

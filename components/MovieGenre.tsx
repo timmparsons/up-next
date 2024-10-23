@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Pressable, Image, SafeAreaView, Alert } from 'react-native';
 
-import { fetchMovies } from '~/app/api';
+import { fetchMovies } from '~/api';
 import { ShowsListProps } from '~/types/movies';
 
 const MovieGenre = ({ id }) => {
