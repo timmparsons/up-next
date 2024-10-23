@@ -1,26 +1,84 @@
 import { Stack } from 'expo-router';
-import React from 'react';
-import { Text, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, TextInput, View } from 'react-native';
 
 import Button from '~/components/Button';
+import { supabase } from '~/utils/supabase';
 
-const Auth = () => {
-  const buttonPress = () => {
-    console.log('Clicked');
-  };
+export default function Auth() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
+
+  async function signUpWithEmail() {
+    setLoading(true);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) Alert.alert(error.message);
+    if (!session) Alert.alert('Please check your inbox for email verification!');
+    setLoading(false);
+  }
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <SafeAreaView>
-        <Text className="text-xl">See what's upNext</Text>
-        <Button
-          title="Get Started"
-          style="center rounded-2xl bg-orange-500 p-5"
-          onPress={buttonPress}
-        />
-      </SafeAreaView>
+      <View style={styles.container}>
+        <View style={[styles.verticallySpaced, styles.mt20]}>
+          <TextInput
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            placeholder="email@address.com"
+            autoCapitalize={'none'}
+          />
+        </View>
+        <View style={styles.verticallySpaced}>
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+            placeholder="Password"
+            autoCapitalize={'none'}
+          />
+        </View>
+        <View style={[styles.verticallySpaced, styles.mt20]}>
+          <Button title="Sign in" onPress={() => signInWithEmail()} />
+        </View>
+        <View style={styles.verticallySpaced}>
+          <Button title="Sign up" onPress={() => signUpWithEmail()} />
+        </View>
+      </View>
     </>
   );
-};
+}
 
-export default Auth;
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 40,
+    padding: 12,
+  },
+  verticallySpaced: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignSelf: 'stretch',
+  },
+  mt20: {
+    marginTop: 20,
+  },
+});

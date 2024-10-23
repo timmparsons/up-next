@@ -2,9 +2,9 @@ import { View, Text, Pressable } from 'react-native';
 import React from 'react';
 
 interface PropList {
-  onPress: () => void;
-  title: string;
-  style: string;
+  onPress?: () => void;
+  title?: string;
+  style?: string;
 }
 
 const Button = (props: PropList) => {

@@ -11,7 +11,7 @@ export default function Home() {
   const router = useRouter();
 
   const goToAuthScreen = () => {
-    router.push('/login'); // Navigate to your auth page
+    router.push('/(auth)/welcome'); // Navigate to your auth page
   };
 
   return (
