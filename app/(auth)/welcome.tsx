@@ -2,8 +2,6 @@ import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Text, SafeAreaView, Pressable, View } from 'react-native';
 
-import Button from '~/components/Button';
-
 const Auth = () => {
   const router = useRouter();
 
@@ -12,7 +10,7 @@ const Auth = () => {
   };
 
   const redirectToSignIn = () => {
-    router.push('/(auth)/signIn');
+    router.push('/(auth)/signUp');
   };
 
   return (
