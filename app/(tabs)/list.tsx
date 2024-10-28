@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList, Text, View, Image } from 'react-native';
 
 import { supabase } from '~/utils/supabase';
 
@@ -9,6 +9,7 @@ interface User {
   email: string;
   name: string;
   username: string;
+  fullName: string;
 }
 
 export default function List() {
@@ -30,7 +31,7 @@ export default function List() {
   }, []);
 
   return (
-    <>
+    <View className="mt-3 px-3">
       <Stack.Screen options={{ title: 'List' }} />
       <Text>Friends List page</Text>
       {appError ? (
@@ -39,9 +40,21 @@ export default function List() {
         <FlatList
           data={appUsers}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <Text>{item.username}</Text>}
+          renderItem={({ item }) => (
+            <View className="my-2 items-center rounded-lg border border-slate-200 bg-white p-2">
+              <Image
+                source={{
+                  uri: 'https://reactnative.dev/img/tiny_logo.png',
+                }}
+                className="w-15 h-15 mb-2 rounded-full"
+              />
+
+              <Text className="font-bold">{item.fullName}</Text>
+              <Text className="">@{item.username}</Text>
+            </View>
+          )}
         />
       )}
-    </>
+    </View>
   );
 }
