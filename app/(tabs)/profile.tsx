@@ -1,5 +1,5 @@
 import { router, Stack } from 'expo-router';
-import { Pressable, Text } from 'react-native';
+import { Pressable, SafeAreaView, Text } from 'react-native';
 
 import { supabase } from '~/utils/supabase';
 
@@ -16,12 +16,12 @@ export default function Profile() {
   };
 
   return (
-    <>
-      <Stack.Screen options={{ title: 'Profile' }} />
+    <SafeAreaView>
+      <Stack.Screen options={{ title: 'Profile', headerShown: false }} />
       <Text>Profile Page</Text>
       <Pressable onPress={handleSignOut}>
         <Text>Logout</Text>
       </Pressable>
-    </>
+    </SafeAreaView>
   );
 }

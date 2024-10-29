@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { FlatList, Text, View, Image } from 'react-native';
+import { FlatList, Text, View, Image, SafeAreaView } from 'react-native';
+import SearchBar from '~/components/SearchBar';
 
 import { supabase } from '~/utils/supabase';
 
@@ -31,9 +32,10 @@ export default function List() {
   }, []);
   console.log('qqq ', appUsers);
   return (
-    <View className="mt-3 px-3">
-      <Stack.Screen options={{ title: 'List' }} />
+    <SafeAreaView className="mt-3 px-3">
+      <Stack.Screen options={{ title: 'List', headerShown: false }} />
       <Text>Friends List page</Text>
+      <SearchBar />
       {appError ? (
         <Text>Error loading users</Text>
       ) : (
@@ -55,6 +57,6 @@ export default function List() {
           )}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }

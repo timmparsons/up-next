@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { useAuth } from '~/context/AuthProvider';
+import { supabase } from '~/utils/supabase';
 
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { session } = useAuth();
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -34,6 +37,23 @@ const MovieDetails = () => {
   if (!movie) {
     return <Text>No movie found.</Text>;
   }
+
+  const likeMovie = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('liked_movies')
+        .insert([{ user_id: session.user.id, movie_id: movie.id }]);
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('Movie liked successfully:', data);
+    } catch (error) {
+      console.error('Error liking the movie:', error.message);
+    }
+  };
+
   return (
     <View>
       <Stack.Screen options={{ title: 'movie', headerBackTitleVisible: false }} />
@@ -46,6 +66,9 @@ const MovieDetails = () => {
       <Text className="mt-2">{movie.overview}</Text>
       <Text>Release Date: {movie.release_date}</Text>
       <Text>Rating: {movie.vote_average}</Text>
+      <Pressable onPress={likeMovie}>
+        <Text className="font-extrabold">Like</Text>
+      </Pressable>
     </View>
   );
 };

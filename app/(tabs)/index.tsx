@@ -6,8 +6,12 @@ import Header from '~/components/Header';
 import SearchBar from '~/components/SearchBar';
 import TrendingMovies from '~/components/TrendingMovies';
 import TrendingTvShows from '~/components/TrendingTvShows';
+import { useAuth } from '~/context/AuthProvider';
+import { supabase } from '~/utils/supabase';
 
 export default function Home() {
+  const { session } = useAuth();
+  console.log('XXX ', session.user);
   const router = useRouter();
 
   const goToAuthScreen = () => {
