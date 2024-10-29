@@ -2,45 +2,58 @@ import { Stack, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, View, Text, SafeAreaView, Pressable, TextInput } from 'react-native';
 
+import CustomTextInput from '~/components/CustomTextInput';
 import { supabase } from '~/utils/supabase';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function signUpWithEmail() {
     setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
-    console.log('here');
-    if (error) Alert.alert(error.message);
-    if (!session) Alert.alert('Please check your inbox for email verification!');
+
+    if (error) Alert.alert('Error signing up ', error.message);
+    if (!data.session) Alert.alert('Please check your inbox for email verification!');
+    const userId = data?.user?.id;
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert([{ id: userId, username, avatar_url: '', full_name: name, created_at: new Date() }]);
+
+    if (profileError) {
+      console.error('Error inserting profile data:', profileError);
+    } else {
+      console.log('Profile created successfully');
+    }
     setLoading(false);
   }
 
   return (
     <SafeAreaView className="flex-1 bg-white pt-5">
-      <Stack.Screen options={{ title: 'Sign In', headerBackTitleVisible: false }} />
+      <Stack.Screen options={{ title: 'Sign Up', headerBackTitleVisible: false }} />
       <View className="mx-4 mt-52">
-        <TextInput
-          onChangeText={(text) => setEmail(text)}
+        <CustomTextInput value={name} placeholder="Name" onChangeText={(text) => setName(text)} />
+        <CustomTextInput
+          value={username}
+          placeholder="Username"
+          onChangeText={(text) => setUsername(text)}
+        />
+        <CustomTextInput
           value={email}
           placeholder="email@address.com"
-          autoCapitalize="none"
-          className="mb-4 w-full rounded-xl border border-gray-200 p-4"
+          onChangeText={(text) => setEmail(text)}
         />
-        <TextInput
-          onChangeText={(text) => setPassword(text)}
+        <CustomTextInput
           value={password}
           placeholder="Password"
-          autoCapitalize="none"
-          className="mb-8 w-full rounded-xl border border-gray-200 p-4"
+          onChangeText={(text) => setPassword(text)}
         />
 
         <View className="w-full flex-row gap-4">

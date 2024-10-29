@@ -18,7 +18,7 @@ export default function List() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: users, error } = await supabase.from('users').select('*');
+      const { data: users, error } = await supabase.from('profiles').select('*');
       if (error) {
         setAppError(error.message);
       } else {
@@ -29,7 +29,7 @@ export default function List() {
 
     fetchData();
   }, []);
-
+  console.log('qqq ', appUsers);
   return (
     <View className="mt-3 px-3">
       <Stack.Screen options={{ title: 'List' }} />
@@ -46,10 +46,10 @@ export default function List() {
                 source={{
                   uri: 'https://reactnative.dev/img/tiny_logo.png',
                 }}
-                className="w-15 h-15 mb-2 rounded-full"
+                className="mb-2 h-16 w-16 rounded-full"
               />
 
-              <Text className="font-bold">{item.fullName}</Text>
+              <Text className="font-bold">{item.full_name}</Text>
               <Text className="">@{item.username}</Text>
             </View>
           )}

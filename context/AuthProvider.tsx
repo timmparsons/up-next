@@ -38,7 +38,7 @@ const AuthProvider = ({ children }: Props) => {
   if (!isReady) {
     return <ActivityIndicator />;
   }
-  console.log('qqq ', session);
+
   return (
     <AuthContext.Provider
       value={{ session, user: session?.user, isAuthenticated: !!session?.user }}>
