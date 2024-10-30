@@ -39,20 +39,43 @@ const MovieDetails = () => {
   }
 
   const likeMovie = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('liked_movies')
-        .insert([{ user_id: session.user.id, movie_id: movie.id }]);
+    const { id, title, description, release_date } = movie;
 
-      if (error) {
-        throw error;
+    const { data: movieExists, error: checkError } = await supabase
+      .from('movies')
+      .select('id')
+      .eq('id', id)
+      .single();
+
+    if (!movieExists) {
+      const { error: insertMovieError } = await supabase.from('movies').insert([
+        {
+          id: movie.id,
+          title,
+          description,
+          release_date,
+        },
+      ]);
+
+      if (insertMovieError) {
+        console.error('Error inserting movie:', insertMovieError.message);
+        return;
       }
+    }
 
-      console.log('Movie liked successfully:', data);
-    } catch (error) {
-      console.error('Error liking the movie:', error.message);
+    const { data, error: likeError } = await supabase
+      .from('liked_movies')
+      .insert([{ user_id: session.user.id, movie_id: movie.id }]);
+
+    if (likeError) {
+      console.error('Error liking the movie:', likeError.message);
+    } else {
+      console.log('Movie liked successfully!');
     }
   };
+
+  const { data } = supabase.from('liked_movies').select('id').eq('id', id).single();
+  console.log('QWE ', data);
 
   return (
     <View>

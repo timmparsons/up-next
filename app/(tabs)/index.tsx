@@ -1,4 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { SafeAreaView, Button } from 'react-native';
 
 import FontsLoader from '~/components/FontsLoader';
@@ -7,12 +8,21 @@ import SearchBar from '~/components/SearchBar';
 import TrendingMovies from '~/components/TrendingMovies';
 import TrendingTvShows from '~/components/TrendingTvShows';
 import { useAuth } from '~/context/AuthProvider';
-import { supabase } from '~/utils/supabase';
+import { apiService } from '~/api/supabase';
 
 export default function Home() {
   const { session } = useAuth();
-  console.log('XXX ', session.user);
   const router = useRouter();
+  const userId = session?.user?.id;
+
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await apiService.initializeApp(userId);
+      console.log('XXQ ', data);
+      setAppData(data);
+    };
+    loadData();
+  }, [userId]);
 
   const goToAuthScreen = () => {
     router.push('/(auth)/welcome'); // Navigate to your auth page

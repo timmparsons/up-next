@@ -5,51 +5,12 @@ import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
   return (
-    <Tabs
-    // screenOptions={{
-    //   tabBarStyle: {
-    //     position: 'absolute',
-    //     bottom: 30,
-    //     height: 60,
-    //     width: '80%',
-    //     left: '10%',
-    //     alignSelf: 'center',
-    //     borderRadius: 30,
-    //     backgroundColor: '#ffffff',
-    //     shadowColor: '#000',
-    //     shadowOffset: { width: 0, height: 4 },
-    //     shadowOpacity: 0.3,
-    //     shadowRadius: 4,
-    //     elevation: 5,
-    //     paddingBottom: 0,
-    //   },
-    //   tabBarActiveTintColor: 'black',
-
-    //   tabBarInactiveTintColor: 'gray',
-    //   tabBarIconStyle: {
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     marginBottom: 0,
-    //   },
-    //   tabBarLabelStyle: {
-    //     fontSize: 9,
-    //     fontWeight: 'semibold',
-    //     paddingTop: 0,
-    //     marginTop: -5,
-    //     marginBottom: 7,
-    //   },
-    // }}>
-    >
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <Feather name="home" size={20} color="lightgray" />,
-          // headerRight: () => (
-          //   <Link href="/modal" asChild>
-          //     <HeaderButton />
-          //   </Link>
-          // ),
         }}
       />
       <Tabs.Screen
