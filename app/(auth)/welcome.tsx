@@ -19,11 +19,13 @@ const Auth = () => {
       <SafeAreaView className="flex-1 items-center justify-center bg-gray-100">
         <Text className="mb-4 text-xl font-bold">Welcome to upNext!</Text>
         <Text className="mb-8 text-lg">Find out what your friends are watching</Text>
-        <Pressable
-          className="rounded-xl border border-orange-500 bg-orange-500 p-5"
-          onPress={redirectToSignIn}>
-          <Text className="text-lg font-bold text-white">Get Started</Text>
-        </Pressable>
+        <View className="flex-row">
+          <Pressable
+            className="mx-3 grow rounded-xl border border-orange-500 bg-orange-500 p-3"
+            onPress={redirectToSignIn}>
+            <Text className="text-center text-lg font-bold text-white">Get Started</Text>
+          </Pressable>
+        </View>
 
         <View className="mt-4" style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text>Already have an account?</Text>

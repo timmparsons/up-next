@@ -9,6 +9,7 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   async function signInWithEmail() {
     setLoading(true);
@@ -20,7 +21,7 @@ export default function Auth() {
     if (error) Alert.alert(error.message);
     setLoading(false);
   }
-
+  console.log('qqq ', isFocused);
   return (
     <SafeAreaView className="flex-1 bg-white pt-5">
       <Stack.Screen options={{ title: 'Log In', headerBackTitleVisible: false }} />
@@ -29,6 +30,8 @@ export default function Auth() {
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           autoCapitalize="none"
           className="mb-4 w-full rounded-xl border border-gray-200 p-4"
         />
@@ -45,7 +48,7 @@ export default function Auth() {
             onPress={() => signInWithEmail()}
             disabled={loading}
             className="flex-1 items-center rounded-xl border border-orange-500 bg-white p-5">
-            <Text className="text-lg font-bold text-orange-500">Sign In</Text>
+            <Text className="text-lg font-bold text-orange-500">Log In</Text>
           </Pressable>
         </View>
       </View>
