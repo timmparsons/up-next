@@ -37,7 +37,7 @@ const SignUp = () => {
     setLoading(false);
   }
 
-  const handlePasswordChange = (text) => {
+  const handlePasswordChange = (text: string) => {
     setPassword(text);
     if (confirmPassword && text !== confirmPassword) {
       setError('Passwords do not match');
@@ -46,7 +46,7 @@ const SignUp = () => {
     }
   };
 
-  const handleConfirmPasswordChange = (text) => {
+  const handleConfirmPasswordChange = (text: string) => {
     setConfirmPassword(text);
     if (password && text !== password) {
       setError('Passwords do not match');

@@ -39,6 +39,7 @@ export default function Auth() {
           value={password}
           placeholder="Password"
           autoCapitalize="none"
+          secureTextEntry
           className="mb-8 w-full rounded-xl border border-gray-200 p-4"
         />
 
