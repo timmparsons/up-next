@@ -1,8 +1,7 @@
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, TextInput, View, Pressable, Text, SafeAreaView } from 'react-native';
+import { Alert, TextInput, View, Pressable, Text, SafeAreaView } from 'react-native';
 
-import Button from '~/components/Button';
 import { supabase } from '~/utils/supabase';
 
 export default function Auth() {

@@ -1,8 +1,9 @@
 import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { FlatList, Text, View, Image, SafeAreaView } from 'react-native';
-import SearchBar from '~/components/SearchBar';
+import { FlatList, Text, View, Image, SafeAreaView, Button } from 'react-native';
 
+import SearchBar from '~/components/SearchBar';
+import { useAuth } from '~/context/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
 interface User {
@@ -16,10 +17,14 @@ interface User {
 export default function List() {
   const [appUsers, setAppUsers] = useState<User[]>([]);
   const [appError, setAppError] = useState<string | null>(null);
+  const { session } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
-      const { data: users, error } = await supabase.from('profiles').select('*');
+      const { data: users, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .not('id', 'is', session?.user);
       if (error) {
         setAppError(error.message);
       } else {
@@ -30,14 +35,17 @@ export default function List() {
 
     fetchData();
   }, []);
-  console.log('qqq ', appUsers);
+
   return (
     <SafeAreaView className="mt-3 px-3">
       <Stack.Screen options={{ title: 'List', headerShown: false }} />
-      <Text>Friends List page</Text>
       <SearchBar />
+      <Text>Friends List page</Text>
       {appError ? (
-        <Text>Error loading users</Text>
+        <View>
+          <Text>You don't have any friends in your list. Try searching for them:</Text>
+          <Button title="Search" onPress={() => {}} />
+        </View>
       ) : (
         <FlatList
           data={appUsers}
