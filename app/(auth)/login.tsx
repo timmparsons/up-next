@@ -1,8 +1,15 @@
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, TextInput, View, Pressable, Text, SafeAreaView } from 'react-native';
+import {
+  Alert,
+  TextInput,
+  View,
+  Pressable,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 
-import Button from '~/components/Button';
 import { supabase } from '~/utils/supabase';
 
 export default function Auth() {
@@ -21,10 +28,19 @@ export default function Auth() {
     if (error) Alert.alert(error.message);
     setLoading(false);
   }
-  console.log('qqq ', isFocused);
+
   return (
     <SafeAreaView className="flex-1 bg-white pt-5">
-      <Stack.Screen options={{ title: 'Log In', headerBackTitleVisible: false }} />
+      <Stack.Screen
+        options={{
+          title: 'Log In',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.push('/(auth)/welcome')}>
+              <Text>Back</Text>
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <View className="mx-4 mt-52">
         <TextInput
           onChangeText={(text) => setEmail(text)}
@@ -40,6 +56,7 @@ export default function Auth() {
           value={password}
           placeholder="Password"
           autoCapitalize="none"
+          secureTextEntry
           className="mb-8 w-full rounded-xl border border-gray-200 p-4"
         />
 

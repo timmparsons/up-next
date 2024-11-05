@@ -10,7 +10,9 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function signUpWithEmail() {
     setLoading(true);
@@ -35,26 +37,61 @@ const SignUp = () => {
     setLoading(false);
   }
 
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+    if (confirmPassword && text !== confirmPassword) {
+      setError('Passwords do not match');
+    } else {
+      setError('');
+    }
+  };
+
+  const handleConfirmPasswordChange = (text: string) => {
+    setConfirmPassword(text);
+    if (password && text !== password) {
+      setError('Passwords do not match');
+    } else {
+      setError('');
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white pt-5">
       <Stack.Screen options={{ title: 'Sign Up', headerBackTitleVisible: false }} />
       <View className="mx-4 mt-52">
-        <CustomTextInput value={name} placeholder="Name" onChangeText={(text) => setName(text)} />
+        <Text className="pb-3 text-xl font-extrabold">Register</Text>
+        <CustomTextInput
+          value={name}
+          placeholder="Name"
+          secureTextEntry={false}
+          onChangeText={(text) => setName(text)}
+        />
         <CustomTextInput
           value={username}
           placeholder="Username"
+          secureTextEntry={false}
           onChangeText={(text) => setUsername(text)}
         />
         <CustomTextInput
           value={email}
           placeholder="email@address.com"
+          secureTextEntry={false}
           onChangeText={(text) => setEmail(text)}
         />
         <CustomTextInput
           value={password}
           placeholder="Password"
-          onChangeText={(text) => setPassword(text)}
+          secureTextEntry
+          onChangeText={handlePasswordChange}
         />
+
+        <CustomTextInput
+          value={confirmPassword}
+          placeholder="Confirm Password"
+          secureTextEntry
+          onChangeText={handleConfirmPasswordChange}
+        />
+        {error ? <Text className="pb-4 text-rose-600">{error}</Text> : null}
 
         <View className="w-full flex-row gap-4">
           <Pressable

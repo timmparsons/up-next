@@ -1,8 +1,19 @@
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { FlatList, Text, View, Image, SafeAreaView } from 'react-native';
-import SearchBar from '~/components/SearchBar';
+import {
+  FlatList,
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+  Button,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 
+import SearchBar from '~/components/SearchBar';
+import { useAuth } from '~/context/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
 interface User {
@@ -16,10 +27,15 @@ interface User {
 export default function List() {
   const [appUsers, setAppUsers] = useState<User[]>([]);
   const [appError, setAppError] = useState<string | null>(null);
+  const { session } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
-      const { data: users, error } = await supabase.from('profiles').select('*');
+      const { data: users, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .neq('id', session.user.id);
+
       if (error) {
         setAppError(error.message);
       } else {
@@ -30,31 +46,62 @@ export default function List() {
 
     fetchData();
   }, []);
-  console.log('qqq ', appUsers);
+
+  const addFriend = async (friendId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('friends')
+        .insert([{ user_id: session.user.id, friend_id: friendId, status: 'pending' }]);
+
+      if (error) {
+        throw error;
+      }
+
+      Alert.alert('Friend request sent!');
+    } catch (error) {
+      console.error('Error sending friend request:', error.message);
+      Alert.alert('Failed to send friend request');
+    }
+  };
+
   return (
     <SafeAreaView className="mt-3 px-3">
       <Stack.Screen options={{ title: 'List', headerShown: false }} />
-      <Text>Friends List page</Text>
       <SearchBar />
+      <Text className="m-5 font-bold">Add friends</Text>
       {appError ? (
-        <Text>Error loading users</Text>
+        <View>
+          <Text>You don't have any friends in your list. Try searching for them:</Text>
+          <Button title="Search" onPress={() => {}} />
+        </View>
       ) : (
         <FlatList
           data={appUsers}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View className="my-2 items-center rounded-lg border border-slate-200 bg-white p-2">
-              <Image
-                source={{
-                  uri: 'https://reactnative.dev/img/tiny_logo.png',
-                }}
-                className="mb-2 h-16 w-16 rounded-full"
-              />
+          renderItem={({ item }) => {
+            return (
+              <View className="my-2 flex-row items-center rounded-lg border border-slate-200 bg-white p-4">
+                {/* Profile Picture */}
+                <Image
+                  source={{
+                    uri: item.avatar_url || 'https://reactnative.dev/img/tiny_logo.png',
+                  }}
+                  className="h-16 w-16 rounded-full"
+                />
 
-              <Text className="font-bold">{item.full_name}</Text>
-              <Text className="">@{item.username}</Text>
-            </View>
-          )}
+                {/* Profile Info */}
+                <View className="ml-4 flex-1">
+                  <Text className="font-bold">{item.full_name}</Text>
+                  <Text className="text-slate-500">@{item.username}</Text>
+                </View>
+
+                {/* Add Friend Button */}
+                <TouchableOpacity onPress={() => addFriend(item.id)} className="ml-auto p-2">
+                  <AntDesign name="pluscircleo" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
         />
       )}
     </SafeAreaView>
