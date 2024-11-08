@@ -1,6 +1,16 @@
 import { Stack, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, View, Text, SafeAreaView, Pressable, TextInput } from 'react-native';
+import {
+  Alert,
+  View,
+  Text,
+  SafeAreaView,
+  Pressable,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 
 import CustomTextInput from '~/components/CustomTextInput';
 import { supabase } from '~/utils/supabase';
@@ -58,50 +68,65 @@ const SignUp = () => {
   return (
     <SafeAreaView className="flex-1 bg-white pt-5">
       <Stack.Screen options={{ title: 'Sign Up', headerBackTitleVisible: false }} />
-      <View className="mx-4 mt-52">
-        <Text className="pb-3 text-xl font-extrabold">Register</Text>
-        <CustomTextInput
-          value={name}
-          placeholder="Name"
-          secureTextEntry={false}
-          onChangeText={(text) => setName(text)}
-        />
-        <CustomTextInput
-          value={username}
-          placeholder="Username"
-          secureTextEntry={false}
-          onChangeText={(text) => setUsername(text)}
-        />
-        <CustomTextInput
-          value={email}
-          placeholder="email@address.com"
-          secureTextEntry={false}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <CustomTextInput
-          value={password}
-          placeholder="Password"
-          secureTextEntry
-          onChangeText={handlePasswordChange}
-        />
 
-        <CustomTextInput
-          value={confirmPassword}
-          placeholder="Confirm Password"
-          secureTextEntry
-          onChangeText={handleConfirmPasswordChange}
-        />
-        {error ? <Text className="pb-4 text-rose-600">{error}</Text> : null}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          bounces={false}
+          keyboardShouldPersistTaps="handled">
+          <View className="mx-4 mt-52">
+            <Text className="pb-3 text-xl font-extrabold">Register</Text>
 
-        <View className="w-full flex-row gap-4">
-          <Pressable
-            onPress={() => signUpWithEmail()}
-            disabled={loading}
-            className="flex-1 items-center rounded-xl bg-orange-500 p-5">
-            <Text className="text-lg font-bold text-white">Sign Up</Text>
-          </Pressable>
-        </View>
-      </View>
+            <CustomTextInput
+              value={name}
+              placeholder="Name"
+              secureTextEntry={false}
+              onChangeText={(text) => setName(text)}
+            />
+
+            <CustomTextInput
+              value={username}
+              placeholder="Username"
+              secureTextEntry={false}
+              onChangeText={(text) => setUsername(text)}
+            />
+
+            <CustomTextInput
+              value={email}
+              placeholder="email@address.com"
+              secureTextEntry={false}
+              onChangeText={(text) => setEmail(text)}
+            />
+
+            <CustomTextInput
+              value={password}
+              placeholder="Password"
+              secureTextEntry
+              onChangeText={handlePasswordChange}
+            />
+
+            <CustomTextInput
+              value={confirmPassword}
+              placeholder="Confirm Password"
+              secureTextEntry
+              onChangeText={handleConfirmPasswordChange}
+            />
+
+            {error ? <Text className="pb-4 text-rose-600">{error}</Text> : null}
+
+            <View className="w-full flex-row gap-4">
+              <Pressable
+                onPress={() => signUpWithEmail()}
+                disabled={loading}
+                className="flex-1 items-center rounded-xl bg-orange-500 p-5">
+                <Text className="text-lg font-bold text-white">Sign Up</Text>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
