@@ -50,10 +50,10 @@ const schema = {
 export async function getMovies() {
   const chat_completion = await groq.chat.completions.create({
     messages: [
-      { role: 'system', content: `You are a movie database that outputs movies in JSON.` },
+      { role: 'system', content: `You are a movie database that outputs movies in JSON format.` },
       {
         role: 'user',
-        content: `Fetch 10 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'description', 'genres', 'release_year' and 'poster_url' fields. Make sure it always returns the movies or tv shows in an array called results`,
+        content: `Fetch 10 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year' and 'poster_url' fields. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
       },
     ],
     model: 'llama3-8b-8192',
@@ -70,7 +70,7 @@ export async function getGroqMovies() {
     console.log('Movies data from getMovie:', movies);
     return movies;
   } catch (error) {
-    console.error('Error in getGroqMovies:', error);
+    console.error('Error in getGroqMovies:', error.message, error.stack);
     return [];
   }
 }
