@@ -14,12 +14,19 @@ const movieSlice = createSlice({
       state.likedMovies = action.payload;
     },
     setAiMovies: (state, action) => {
-      console.log('QQQ', action.payload);
       state.aiMovies = action.payload.results;
     },
   },
 });
 
 export const { setLikedMovies, setAiMovies } = movieSlice.actions;
+
+//Selectors
+export const selectAllAiMovies = (state) => {
+  return state.moviesList.aiMovies;
+};
+
+export const selectMoviesByGenre = (genre) => (state) =>
+  state.aiMovies.filter((movie) => movie.genres.includes(genre));
 
 export default movieSlice.reducer;
