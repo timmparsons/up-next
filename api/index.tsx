@@ -17,34 +17,36 @@ export const fetchMovies = async (type: string, params: string) => {
     throw error;
   }
 };
+function encodeQueryString(str: string) {
+  return encodeURIComponent(str);
+}
 
-// export const getTmdbMovieImages = async (movieTitles: []) => {
-//   const movieImages = [];
+export const getTmdbMovieImages = async (movieTitles: []) => {
+  const movieImages = [];
 
-//   for (const title of movieTitles) {
-//     try {
-//       const url = `${TMDB_MOVIE_URL}/search/movie?query=${encodeURI(title)}`;
-//       const response = await fetch(url, {
-//         method: 'GET',
-//         headers: {
-//           Authorization: `Bearer $${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
-//         },
-//       });
-//       const jsonData = await response.json();
+  for (const { title } of movieTitles) {
+    try {
+      const url = `${TMDB_MOVIE_URL}/search/movie?query=${encodeQueryString(title)}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
+        },
+      });
+      const jsonData = await response.json();
 
-//       if (jsonData.results && jsonData.results.length > 0) {
-//         const movieData = jsonData.results[0];
-//         const imageUrl = `https://image.tmdb.org/t/p/w500${movieData.poster_path}`;
+      if (jsonData.results && jsonData.results.length > 0) {
+        const movieData = jsonData.results[0];
+        const imageUrl = `https://image.tmdb.org/t/p/w500${movieData.poster_path}`;
+        movieImages.push({
+          title,
+          imageUrl,
+        });
+      }
+    } catch (error) {
+      console.error(`Error fetching TMDB image for ${title}:`, error);
+    }
+  }
 
-//         movieImages.push({
-//           title,
-//           imageUrl,
-//         });
-//       }
-//     } catch (error) {
-//       console.error(`Error fetching TMDB image for ${title}:`, error);
-//     }
-//   }
-
-//   return movieImages;
-// };
+  return movieImages;
+};

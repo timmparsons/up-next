@@ -27,7 +27,7 @@ export default function RootLayout() {
       fetchMovies();
     }, [dispatch]);
 
-    return null; // No need to render anything
+    return null;
   }
 
   return (
