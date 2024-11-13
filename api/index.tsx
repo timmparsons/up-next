@@ -24,7 +24,7 @@ function encodeQueryString(str: string) {
 export const getTmdbMovieImages = async (movieTitles: []) => {
   const movieImages = [];
 
-  for (const { title } of movieTitles) {
+  for (const { title, provider } of movieTitles) {
     try {
       const url = `${TMDB_MOVIE_URL}/search/movie?query=${encodeQueryString(title)}`;
       const response = await fetch(url, {
@@ -38,9 +38,11 @@ export const getTmdbMovieImages = async (movieTitles: []) => {
       if (jsonData.results && jsonData.results.length > 0) {
         const movieData = jsonData.results[0];
         const imageUrl = `https://image.tmdb.org/t/p/w500${movieData.poster_path}`;
+
         movieImages.push({
           title,
           imageUrl,
+          provider,
         });
       }
     } catch (error) {

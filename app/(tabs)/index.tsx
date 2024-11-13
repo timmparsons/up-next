@@ -1,6 +1,9 @@
 import { Stack, useRouter } from 'expo-router';
-import { SafeAreaView, Button, Text, FlatList, View, Image } from 'react-native';
 import { useEffect, useState } from 'react';
+import { SafeAreaView, Button, Text, FlatList, View, Image } from 'react-native';
+
+import { useDispatch, useSelector } from 'react-redux';
+
 import FontsLoader from '~/components/FontsLoader';
 import Header from '~/components/Header';
 import SearchBar from '~/components/SearchBar';
@@ -8,14 +11,15 @@ import TrendingMovies from '~/components/TrendingMovies';
 import TrendingTvShows from '~/components/TrendingTvShows';
 import { useAuth } from '~/context/AuthProvider';
 import { setAiMovies, selectAllAiMovies } from '~/redux/slices/movieSlice';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { getTmdbMovieImages } from '~/api';
 import { getGroqMovies } from '../../grok';
+import { providers } from '../constants';
 
 export default function Home() {
   const { session } = useAuth();
   const router = useRouter();
-  const [movieImages, setMovieImages] = useState<any[]>([]);
+  const [movieImages, setMovieImages] = useState<string[]>([]);
   const movies = useSelector(selectAllAiMovies);
 
   useEffect(() => {
@@ -38,14 +42,24 @@ export default function Home() {
     router.push('/(auth)/welcome');
   };
 
-  const renderItem = ({ item }) => (
-    <View className="m-4 flex-1 items-center justify-center">
-      <Image source={{ uri: item.imageUrl }} className="h-40 w-28 rounded-lg" resizeMode="cover" />
-      <Text className="mt-2 text-center text-sm" numberOfLines={2}>
-        {item.title}
-      </Text>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    console.log('qqq ', item);
+    return (
+      <View className="m-4 flex-1 items-center justify-center">
+        <Image
+          source={{ uri: item.imageUrl }}
+          className="h-40 w-28 rounded-lg"
+          resizeMode="cover"
+        />
+        <Text className="mt-2 text-center text-sm" numberOfLines={2}>
+          {item.title}
+        </Text>
+        <Text className="pt-2 text-center text-sm" numberOfLines={1}>
+          {providers[item.provider]?.logo}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <FontsLoader>
@@ -53,7 +67,7 @@ export default function Home() {
         <Stack.Screen options={{ title: 'Home', headerShown: false }} />
         <Header />
 
-        <Button title="Go to Auth" onPress={goToAuthScreen} />
+        {/* <Button title="Go to Auth" onPress={goToAuthScreen} /> */}
         <FlatList
           data={movieImages}
           renderItem={renderItem}

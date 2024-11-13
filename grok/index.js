@@ -42,6 +42,7 @@ const schema = {
     languages: { type: 'array', items: { type: 'string' } },
     runtime: { type: 'integer', description: 'Runtime in minutes.', minimum: 1 },
     image_url: { type: 'string', description: 'URL to image.', format: 'uri' },
+    provider: { type: 'string', description: 'Provider showing show' },
   },
   required: ['title', 'type', 'release_year', 'genre', 'description'],
   additionalProperties: false,
@@ -53,7 +54,7 @@ export async function getMovies() {
       { role: 'system', content: `You are a movie database that outputs movies in JSON format.` },
       {
         role: 'user',
-        content: `Fetch 10 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year' and 'poster_url' fields. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
+        content: `Fetch 10 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year', 'poster_url' and 'provider' fields fields. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
       },
     ],
     model: 'llama3-8b-8192',
