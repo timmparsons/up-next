@@ -1,20 +1,20 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { SafeAreaView, Button, Text, FlatList, View, Image } from 'react-native';
+import { SafeAreaView, Text, FlatList, View, Image, Pressable } from 'react-native';
+import { Link } from 'expo-router';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import FontsLoader from '~/components/FontsLoader';
-import Header from '~/components/Header';
-import SearchBar from '~/components/SearchBar';
-import TrendingMovies from '~/components/TrendingMovies';
-import TrendingTvShows from '~/components/TrendingTvShows';
-import { useAuth } from '~/context/AuthProvider';
-import { setAiMovies, selectAllAiMovies } from '~/redux/slices/movieSlice';
+import { providers } from '../constants';
 
 import { getTmdbMovieImages } from '~/api';
-import { getGroqMovies } from '../../grok';
-import { providers } from '../constants';
+import FontsLoader from '~/components/FontsLoader';
+import Header from '~/components/Header';
+// import SearchBar from '~/components/SearchBar';
+// import TrendingMovies from '~/components/TrendingMovies';
+// import TrendingTvShows from '~/components/TrendingTvShows';
+import { useAuth } from '~/context/AuthProvider';
+import { selectAllAiMovies } from '~/redux/slices/movieSlice';
 
 export default function Home() {
   const { session } = useAuth();
@@ -46,17 +46,21 @@ export default function Home() {
     console.log('qqq ', item);
     return (
       <View className="m-4 flex-1 items-center justify-center">
-        <Image
-          source={{ uri: item.imageUrl }}
-          className="h-40 w-28 rounded-lg"
-          resizeMode="cover"
-        />
-        <Text className="mt-2 text-center text-sm" numberOfLines={2}>
-          {item.title}
-        </Text>
-        <Text className="pt-2 text-center text-sm" numberOfLines={1}>
-          {providers[item.provider]?.logo}
-        </Text>
+      <Link href={`/${item?.id}`} asChild>
+
+        <Pressable onPress={() => console.log('Image clicked')}>
+          <Image
+            source={{ uri: item.imageUrl }}
+            className="h-40 w-28 rounded-lg"
+            resizeMode="cover"
+          />
+          <Text className="mt-2 text-center text-sm" numberOfLines={2}>
+            {item.title}
+          </Text>
+          <Text className="pt-2 text-center text-sm" numberOfLines={1}>
+            {providers[item.provider]?.logo}
+          </Text>
+        </Pressable>
       </View>
     );
   };

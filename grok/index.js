@@ -49,20 +49,34 @@ const schema = {
 };
 
 export async function getMovies() {
-  const chat_completion = await groq.chat.completions.create({
-    messages: [
-      { role: 'system', content: `You are a movie database that outputs movies in JSON format.` },
-      {
-        role: 'user',
-        content: `Fetch 10 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year', 'poster_url' and 'provider' fields fields. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
-      },
-    ],
-    model: 'llama3-8b-8192',
-    temperature: 0,
-    stream: false,
-    response_format: { type: 'json_object' },
-  });
-  return chat_completion.choices[0]?.message?.content;
+  const models = ['llama3-8b-8192', 'gemma2-9b-it', 'llama-3.2-11b-text-preview', 'gemma-7b-it'];
+
+  for (const model of models) {
+    try {
+      const chat_completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: `You are a movie database that outputs movies in JSON format.`,
+          },
+          {
+            role: 'user',
+            content: `Fetch 12 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year', 'poster_url' and 'provider' fields. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
+          },
+        ],
+        model,
+        temperature: 0,
+        stream: false,
+        response_format: { type: 'json_object' },
+      });
+      // If successful, return the result
+      return chat_completion.choices[0]?.message?.content;
+    } catch (error) {
+      console.error(`Model ${model} failed:`, error);
+    }
+  }
+  // If no models were successful, handle the failure case
+  throw new Error('All models failed to fetch movie data.');
 }
 
 export async function getGroqMovies() {

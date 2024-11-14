@@ -21,7 +21,11 @@ export default function RootLayout() {
     useEffect(() => {
       const fetchMovies = async () => {
         const aiMoviesData = await getGroqMovies();
-        dispatch(setAiMovies(JSON.parse(aiMoviesData)));
+        if (typeof aiMoviesData === 'string') {
+          dispatch(setAiMovies(JSON.parse(aiMoviesData)));
+        } else {
+          dispatch(setAiMovies([])); // Or any fallback array you want
+        }
       };
 
       fetchMovies();
