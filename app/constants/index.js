@@ -49,4 +49,12 @@ export const providers = {
       />
     ),
   },
+  'Apple TV+': {
+    logo: (
+      <Image
+        style={imageStyle}
+        source={{ uri: 'https://img.icons8.com/ios/50/1A1A1A/apple-tv.png' }}
+      />
+    ),
+  },
 };

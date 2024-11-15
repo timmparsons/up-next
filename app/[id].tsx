@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Pressable, SafeAreaView } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useAuth } from '~/context/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
 const MovieDetails = () => {
-  const { id } = useLocalSearchParams();
+  const { id, provider, type } = useLocalSearchParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const { session } = useAuth();
@@ -13,11 +13,15 @@ const MovieDetails = () => {
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, {
-          headers: {
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
-          },
-        });
+        const response = await fetch(
+          `https://api.themoviedb.org/3/${type === 'movie' ? 'movie' : 'tv'}/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
+            },
+          }
+        );
+
         const data = await response.json();
         setMovie(data);
       } catch (error) {
@@ -26,7 +30,6 @@ const MovieDetails = () => {
         setLoading(false);
       }
     };
-
     fetchMovieData();
   }, []);
 
@@ -40,7 +43,6 @@ const MovieDetails = () => {
 
   const likeMovie = async () => {
     const { id, title, description, release_date } = movie;
-
     const { data: movieExists, error: checkError } = await supabase
       .from('movies')
       .select('id')
@@ -75,12 +77,11 @@ const MovieDetails = () => {
   };
 
   const { data } = supabase.from('liked_movies').select('id').eq('id', id).single();
-  console.log('QWE ', data);
-
+  console.log('qqq ', movie);
   return (
-    <View>
+    <SafeAreaView>
       <Stack.Screen options={{ title: 'movie', headerBackTitleVisible: false }} />
-      <Text className="text-2xl font-bold">{movie?.title}</Text>
+      <Text className="mt-5 text-2xl font-bold">{movie?.title || movie?.name}</Text>
       <Image
         className="h-60 w-full rounded-lg"
         source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}` }}
@@ -92,7 +93,7 @@ const MovieDetails = () => {
       <Pressable onPress={likeMovie}>
         <Text className="font-extrabold">Like</Text>
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 };
 

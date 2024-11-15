@@ -35,7 +35,7 @@ export default function Home() {
   }, [movies]);
 
   if (!movies || movies.length === 0) {
-    return <Text>Loading...</Text>;
+    return <Text className="text-xl font-semibold">Loading...</Text>;
   }
 
   const goToAuthScreen = (): void => {
@@ -43,24 +43,34 @@ export default function Home() {
   };
 
   const renderItem = ({ item }) => {
-    console.log('qqq ', item);
     return (
       <View className="m-4 flex-1 items-center justify-center">
-      <Link href={`/${item?.id}`} asChild>
-
-        <Pressable onPress={() => console.log('Image clicked')}>
-          <Image
-            source={{ uri: item.imageUrl }}
-            className="h-40 w-28 rounded-lg"
-            resizeMode="cover"
-          />
-          <Text className="mt-2 text-center text-sm" numberOfLines={2}>
-            {item.title}
-          </Text>
-          <Text className="pt-2 text-center text-sm" numberOfLines={1}>
-            {providers[item.provider]?.logo}
-          </Text>
-        </Pressable>
+        <Link
+          href={{
+            pathname: `${item?.movieId}`,
+            params: {
+              movieId: item?.movieId,
+              title: item?.title,
+              imageUrl: item?.imageUrl,
+              provider: item?.provider,
+              type: item?.type,
+            },
+          }}
+          asChild>
+          <Pressable>
+            <Image
+              source={{ uri: item.imageUrl }}
+              className="h-40 w-28 rounded-lg"
+              resizeMode="cover"
+            />
+            <Text className="mt-2 text-center text-sm" numberOfLines={2}>
+              {item.title}
+            </Text>
+            <Text className="pt-2 text-center text-sm" numberOfLines={1}>
+              {providers[item.provider]?.logo}
+            </Text>
+          </Pressable>
+        </Link>
       </View>
     );
   };
