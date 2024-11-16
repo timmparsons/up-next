@@ -43,6 +43,7 @@ const MovieDetails = () => {
 
   const likeMovie = async () => {
     const { id, title, description, release_date } = movie;
+
     const { data: movieExists, error: checkError } = await supabase
       .from('movies')
       .select('id')
@@ -76,8 +77,8 @@ const MovieDetails = () => {
     }
   };
 
-  const { data } = supabase.from('liked_movies').select('id').eq('id', id).single();
-  console.log('qqq ', movie);
+  // const { data } = supabase.from('liked_movies').select('id').eq('id', id).single();
+
   return (
     <SafeAreaView>
       <Stack.Screen options={{ title: 'movie', headerBackTitleVisible: false }} />

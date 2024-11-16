@@ -10,7 +10,7 @@ import { providers } from '../constants';
 import { getTmdbMovieImages } from '~/api';
 import FontsLoader from '~/components/FontsLoader';
 import Header from '~/components/Header';
-// import SearchBar from '~/components/SearchBar';
+import SearchBar from '~/components/SearchBar';
 // import TrendingMovies from '~/components/TrendingMovies';
 // import TrendingTvShows from '~/components/TrendingTvShows';
 import { useAuth } from '~/context/AuthProvider';
@@ -80,6 +80,7 @@ export default function Home() {
       <SafeAreaView className="flex-1">
         <Stack.Screen options={{ title: 'Home', headerShown: false }} />
         <Header />
+        <SearchBar />
 
         {/* <Button title="Go to Auth" onPress={goToAuthScreen} /> */}
         <FlatList

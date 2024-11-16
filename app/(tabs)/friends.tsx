@@ -24,7 +24,7 @@ interface User {
   full_name: string;
 }
 
-export default function List() {
+export default function Friends() {
   const [appUsers, setAppUsers] = useState<User[]>([]);
   const [appError, setAppError] = useState<string | null>(null);
   const { session } = useAuth();

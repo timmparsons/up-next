@@ -1,9 +1,9 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Image } from 'react-native';
 
-const imageStyle = { width: 25, height: 25 };
+export const imageStyle = { width: 25, height: 25 };
+
 export const providers = {
   Netflix: {
     logo: <Fontisto name="netflix" size={18} color="black" />,
