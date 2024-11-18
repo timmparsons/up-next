@@ -5,7 +5,7 @@ const groq = new Groq({
   dangerouslyAllowBrowser: true,
 });
 
-const NUM = Math.floor(Math.random() * 20) + 1;
+const NUM = Math.floor(Math.random() * 30) + 1;
 
 const schema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -61,7 +61,7 @@ export async function getMovies() {
           },
           {
             role: 'user',
-            content: `Fetch 12 random movies and tv shows from the past ${NUM} years using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year', 'poster_url' and 'provider' fields and a field called 'type' that shows whether it's tv or movie. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
+            content: `Fetch 11 random movies and tv shows using a ${schema} like above ensuring each item fully follows the provided schema including 'title', 'description', 'genres', 'release_year', 'poster_url' and 'provider' fields and a field called 'type' that shows whether it's tv or movie. Make sure it always returns the movies or tv shows in an array called results. Make sure it is always random and new ones are shown each time.`,
           },
         ],
         model,

@@ -11,8 +11,6 @@ import { getTmdbMovieImages } from '~/api';
 import FontsLoader from '~/components/FontsLoader';
 import Header from '~/components/Header';
 import SearchBar from '~/components/SearchBar';
-// import TrendingMovies from '~/components/TrendingMovies';
-// import TrendingTvShows from '~/components/TrendingTvShows';
 import { useAuth } from '~/context/AuthProvider';
 import { selectAllAiMovies } from '~/redux/slices/movieSlice';
 
@@ -35,7 +33,11 @@ export default function Home() {
   }, [movies]);
 
   if (!movies || movies.length === 0) {
-    return <Text className="text-xl font-semibold">Loading...</Text>;
+    return (
+      <View className="flex-1 justify-center">
+        <Text className="text-xl font-semibold">Loading...</Text>
+      </View>
+    );
   }
 
   const goToAuthScreen = (): void => {
@@ -63,12 +65,12 @@ export default function Home() {
               className="h-40 w-28 rounded-lg"
               resizeMode="cover"
             />
-            <Text className="mt-2 text-center text-sm" numberOfLines={2}>
-              {item.title}
-            </Text>
-            <Text className="pt-2 text-center text-sm" numberOfLines={1}>
-              {providers[item.provider]?.logo}
-            </Text>
+            <View className="h-20 justify-between">
+              <Text className="mt-2 text-center text-sm" numberOfLines={2} ellipsizeMode="tail">
+                {item.title}
+              </Text>
+              <Text className="mb-2 text-center text-sm">{providers[item.provider]?.logo}</Text>
+            </View>
           </Pressable>
         </Link>
       </View>
@@ -82,7 +84,6 @@ export default function Home() {
         <Header />
         <SearchBar />
 
-        {/* <Button title="Go to Auth" onPress={goToAuthScreen} /> */}
         <FlatList
           data={movieImages}
           renderItem={renderItem}
