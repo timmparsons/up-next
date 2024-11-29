@@ -12,52 +12,73 @@ import { supabase } from '~/utils/supabase';
 const MovieDetails = () => {
   const { movie } = useLocalSearchParams();
   const parsedMovie = JSON.parse(movie);
-  const [loading, setLoading] = useState(true);
   const { session } = useAuth();
 
-  // useEffect(() => {
-  //   const fetchMovieData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `https://api.themoviedb.org/3/${type === 'movie' ? 'movie' : 'tv'}/${id}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
-  //           },
-  //         }
-  //       );
+  const [isLiked, setIsLiked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  //       const data = await response.json();
-  //       setMovie(data);
-  //     } catch (error) {
-  //       console.error('Error fetching movie data:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchMovieData();
-  // }, []);
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      if (!session?.user?.id) return;
 
-  // if (loading) {
-  //   return (
-  //     <View className="flex-1 justify-center">
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //     </View>
-  //   );
-  // }
+      const { data, error } = await supabase
+        .from('liked_movies')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .eq('movie_id', parsedMovie.id)
+        .single();
 
-  // if (!movie) {
-  //   return (
-  //     <View className="flex-1 justify-center">
-  //       <Text className="text-xl">No movie found.</Text>
-  //     </View>
-  //   );
-  // }
+      if (error && error.details !== 'Row not found') {
+        console.error('Error checking liked movies:', error);
+      } else {
+        setIsLiked(!!data); // If data exists, the movie is liked
+      }
+
+      setLoading(false);
+    };
+
+    checkIfLiked();
+  }, [parsedMovie.id, session?.user?.id]);
 
   const likeMovie = async () => {
-    console.log('Clicked');
+    setIsLiked(true); // Optimistic update
+
+    const { error } = await supabase
+      .from('liked_movies')
+      .insert([{ user_id: session.user.id, movie_id: parsedMovie.id }]);
+
+    if (error) {
+      console.error('Error liking movie:', error);
+      setIsLiked(false); // Revert if error occurs
+    }
   };
-  console.log('QWWE ', parsedMovie);
+
+  const unlikeMovie = async () => {
+    setIsLiked(false); // Optimistic update
+    console.log('Unliking movie:', parsedMovie.id, session.user.id);
+
+    const { data, error } = await supabase
+      .from('liked_movies')
+      .delete()
+      .eq('user_id', session.user.id)
+      .eq('movie_id', parsedMovie.id);
+
+    if (error) {
+      console.error('Error unliking movie:', error);
+      setIsLiked(true); // Revert if error occurs
+    } else {
+      console.log('Successfully unliked movie:', data);
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center">
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView className="flex-1 p-4">
       <Stack.Screen options={{ title: 'Movie', headerBackTitleVisible: false }} />
@@ -77,17 +98,19 @@ const MovieDetails = () => {
           <Text className="text-lg">Rating:</Text>
           <Text className="ml-2 text-lg">{parsedMovie.vote_average}</Text>
         </View>
-        <View className="mb-4 flex-row">
-          <Text className="text-lg">Provider:</Text>
-        </View>
         <View className="mb-4 mr-2 flex-row justify-end">
-          <Pressable onPress={likeMovie} className="mr-6">
-            <AntDesign name="hearto" size={24} color="black" />
+          <Pressable onPress={isLiked ? unlikeMovie : likeMovie} className="mr-6">
+            <AntDesign
+              name={isLiked ? 'heart' : 'hearto'}
+              size={24}
+              color={isLiked ? 'red' : 'black'}
+            />
           </Pressable>
           <Pressable>
             <Feather name="send" size={24} color="black" />
           </Pressable>
         </View>
+        <Text className="text-lg">Friends thoughts:</Text>
       </View>
     </SafeAreaView>
   );

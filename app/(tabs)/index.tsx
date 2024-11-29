@@ -1,5 +1,5 @@
 import { Stack, useRouter, Link } from 'expo-router';
-import { SafeAreaView, Text, FlatList, View, Image, Pressable } from 'react-native';
+import { SafeAreaView, Text, FlatList, View, Image, Pressable, Button } from 'react-native';
 
 import { useSelector } from 'react-redux';
 
@@ -66,10 +66,10 @@ export default function Home() {
         <Stack.Screen options={{ title: 'Home', headerShown: false }} />
         <Header />
         <SearchBar />
-         <Button title="Go to Auth" onPress={goToAuthScreen} />
+        <Button title="Go to Auth" onPress={goToAuthScreen} />
         <FlatList
           data={shuffledMovies}
-         renderItem={renderItem}
+          renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           numColumns={3}
         />
