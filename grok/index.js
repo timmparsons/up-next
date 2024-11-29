@@ -82,7 +82,7 @@ export async function getMovies() {
 export async function getGroqMovies() {
   try {
     const movies = await getMovies();
-    console.log('Movies data from getMovie:', movies);
+    // console.log('Movies data from getMovie:', movies);
     return movies;
   } catch (error) {
     console.error('Error in getGroqMovies:', error.message, error.stack);
