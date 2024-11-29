@@ -70,6 +70,7 @@ export const getTmdbMovieImages = async (movieTitles: []) => {
           provider,
           movieId,
           type,
+
         });
       }
     } catch (error) {

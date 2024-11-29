@@ -9,6 +9,7 @@ import FontsLoader from '~/components/FontsLoader';
 import Header from '~/components/Header';
 import SearchBar from '~/components/SearchBar';
 import { useAuth } from '~/context/AuthProvider';
+
 import { selectAllAiMovies } from '~/redux/slices/movieSlice';
 
 export default function Home() {
@@ -65,10 +66,10 @@ export default function Home() {
         <Stack.Screen options={{ title: 'Home', headerShown: false }} />
         <Header />
         <SearchBar />
-
+         <Button title="Go to Auth" onPress={goToAuthScreen} />
         <FlatList
           data={shuffledMovies}
-          renderItem={renderItem}
+         renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           numColumns={3}
         />
