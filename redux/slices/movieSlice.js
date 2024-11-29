@@ -14,7 +14,7 @@ const movieSlice = createSlice({
       state.likedMovies = action.payload;
     },
     setAiMovies: (state, action) => {
-      state.aiMovies = action.payload.results;
+      state.aiMovies = action.payload;
     },
   },
 });

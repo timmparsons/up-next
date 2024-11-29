@@ -8,6 +8,7 @@ import AuthProvider from '~/context/AuthProvider';
 import { getGroqMovies } from '~/grok';
 import { setAiMovies } from '~/redux/slices/movieSlice';
 import '../global.css';
+import { supabase } from '~/utils/supabase';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -19,12 +20,20 @@ export default function RootLayout() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-      const fetchMovies = async () => {
-        const aiMoviesData = await getGroqMovies();
-        dispatch(setAiMovies(JSON.parse(aiMoviesData)));
+      const getMovies = async () => {
+        let { data, error } = await supabase.from('movies').select('*');
+        dispatch(setAiMovies(data));
       };
-
-      fetchMovies();
+      // const fetchMovies = async () => {
+      //   const aiMoviesData = await getGroqMovies();
+      //   if (typeof aiMoviesData === 'string') {
+      //     dispatch(setAiMovies(JSON.parse(aiMoviesData)));
+      //   } else {
+      //     dispatch(setAiMovies([])); // Or any fallback array you want
+      //   }
+      // };
+      getMovies();
+      // fetchMovies();
     }, [dispatch]);
 
     return null;

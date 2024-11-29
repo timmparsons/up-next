@@ -1,98 +1,95 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
 import { Stack, useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, ActivityIndicator, Pressable, SafeAreaView } from 'react-native';
+
+import { providers } from './constants';
+
 import { useAuth } from '~/context/AuthProvider';
 import { supabase } from '~/utils/supabase';
 
 const MovieDetails = () => {
-  const { id } = useLocalSearchParams();
-  const [movie, setMovie] = useState(null);
+  const { movie } = useLocalSearchParams();
+  const parsedMovie = JSON.parse(movie);
   const [loading, setLoading] = useState(true);
   const { session } = useAuth();
 
-  useEffect(() => {
-    const fetchMovieData = async () => {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, {
-          headers: {
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
-          },
-        });
-        const data = await response.json();
-        setMovie(data);
-      } catch (error) {
-        console.error('Error fetching movie data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchMovieData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://api.themoviedb.org/3/${type === 'movie' ? 'movie' : 'tv'}/${id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_PASSKEY}`,
+  //           },
+  //         }
+  //       );
 
-    fetchMovieData();
-  }, []);
+  //       const data = await response.json();
+  //       setMovie(data);
+  //     } catch (error) {
+  //       console.error('Error fetching movie data:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchMovieData();
+  // }, []);
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+  // if (loading) {
+  //   return (
+  //     <View className="flex-1 justify-center">
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //     </View>
+  //   );
+  // }
 
-  if (!movie) {
-    return <Text>No movie found.</Text>;
-  }
+  // if (!movie) {
+  //   return (
+  //     <View className="flex-1 justify-center">
+  //       <Text className="text-xl">No movie found.</Text>
+  //     </View>
+  //   );
+  // }
 
   const likeMovie = async () => {
-    const { id, title, description, release_date } = movie;
-
-    const { data: movieExists, error: checkError } = await supabase
-      .from('movies')
-      .select('id')
-      .eq('id', id)
-      .single();
-
-    if (!movieExists) {
-      const { error: insertMovieError } = await supabase.from('movies').insert([
-        {
-          id: movie.id,
-          title,
-          description,
-          release_date,
-        },
-      ]);
-
-      if (insertMovieError) {
-        console.error('Error inserting movie:', insertMovieError.message);
-        return;
-      }
-    }
-
-    const { data, error: likeError } = await supabase
-      .from('liked_movies')
-      .insert([{ user_id: session.user.id, movie_id: movie.id }]);
-
-    if (likeError) {
-      console.error('Error liking the movie:', likeError.message);
-    } else {
-      console.log('Movie liked successfully!');
-    }
+    console.log('Clicked');
   };
-
-  const { data } = supabase.from('liked_movies').select('id').eq('id', id).single();
-  console.log('QWE ', data);
-
+  console.log('QWWE ', parsedMovie);
   return (
-    <View>
-      <Stack.Screen options={{ title: 'movie', headerBackTitleVisible: false }} />
-      <Text className="text-2xl font-bold">{movie?.title}</Text>
+    <SafeAreaView className="flex-1 p-4">
+      <Stack.Screen options={{ title: 'Movie', headerBackTitleVisible: false }} />
+      <Text className="mb-4 p-3 text-3xl font-bold">{parsedMovie?.title || parsedMovie?.name}</Text>
       <Image
-        className="h-60 w-full rounded-lg"
-        source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}` }}
-        resizeMode="cover"
+        className="mb-4 h-60 w-full rounded-lg"
+        source={{ uri: `https://image.tmdb.org/t/p/w500/${parsedMovie.poster_path}` }}
+        resizeMode="contain"
       />
-      <Text className="mt-2">{movie.overview}</Text>
-      <Text>Release Date: {movie.release_date}</Text>
-      <Text>Rating: {movie.vote_average}</Text>
-      <Pressable onPress={likeMovie}>
-        <Text className="font-extrabold">Like</Text>
-      </Pressable>
-    </View>
+      <View className="p-3">
+        <Text className="mb-2 text-lg">{parsedMovie.overview}</Text>
+        <View className="mb-2 flex-row">
+          <Text className="text-lg">Release Date:</Text>
+          <Text className="ml-2 text-lg">{parsedMovie.release_date}</Text>
+        </View>
+        <View className="mb-2 flex-row">
+          <Text className="text-lg">Rating:</Text>
+          <Text className="ml-2 text-lg">{parsedMovie.vote_average}</Text>
+        </View>
+        <View className="mb-4 flex-row">
+          <Text className="text-lg">Provider:</Text>
+        </View>
+        <View className="mb-4 mr-2 flex-row justify-end">
+          <Pressable onPress={likeMovie} className="mr-6">
+            <AntDesign name="hearto" size={24} color="black" />
+          </Pressable>
+          <Pressable>
+            <Feather name="send" size={24} color="black" />
+          </Pressable>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
