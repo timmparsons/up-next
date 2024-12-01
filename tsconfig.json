@@ -4,9 +4,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "*"
-      ]
+      "~/*": ["*"]
     }
   },
   "include": [
@@ -14,6 +12,8 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "components/MovieDetails/MovieDetailsContainer.js",
+    "components/MovieDetails/MovieDetails.js"
   ]
 }

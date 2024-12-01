@@ -1,4 +1,3 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Feather from '@expo/vector-icons/Feather';
 import React from 'react';
 import { Text, View, Pressable } from 'react-native';

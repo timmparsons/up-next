@@ -26,12 +26,12 @@ const MovieDetails = () => {
         .select('*')
         .eq('user_id', session.user.id)
         .eq('movie_id', parsedMovie.id)
-        .single();
+        .maybeSingle();
 
       if (error && error.details !== 'Row not found') {
         console.error('Error checking liked movies:', error);
       } else {
-        setIsLiked(!!data); // If data exists, the movie is liked
+        setIsLiked(!!data);
       }
 
       setLoading(false);
