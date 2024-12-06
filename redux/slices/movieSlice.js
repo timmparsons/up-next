@@ -26,7 +26,4 @@ export const selectAllAiMovies = (state) => {
   return state.moviesList.aiMovies;
 };
 
-export const selectMoviesByGenre = (genre) => (state) =>
-  state.aiMovies.filter((movie) => movie.genres.includes(genre));
-
 export default movieSlice.reducer;
